@@ -2,6 +2,36 @@
 
 {% block content %}
 <div class="container">
-    <h2>HOME</h2>
+
+  <form>
+    {{ form.as_p }}
+    <button type="button" class="btn btn-primary" id="api_submit">GET</button>
+  </form>
+
+  <br><br>
+  <div id="api_results"></div>
+
+
 </div>
+
+<script>
+  var delayTimer;
+  $('#api_submit').click(function() {
+    clearTimeout(delayTimer);
+    $('#api_results').text('Ładowanie...');
+    delayTimer = setTimeout(function() {
+      var text = $('#id_url').val();
+      $.ajax({
+        url: '/apirequest',
+        data: {
+          'url': text,
+        },
+        dataType: 'json',
+        success: function(data) {
+          $('#api_results').text(data['result']);
+        },
+      });
+    }, 2000);
+  });
+</script>
 {% endblock %}

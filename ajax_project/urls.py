@@ -20,4 +20,5 @@ from ajax_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('apirequest', views.api_request, name='api_request'),
 ]
