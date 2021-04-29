@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('apirequest', views.api_request, name='api_request'),
+    path('postapirequest', views.post_api_request, name='post_api_request'),
 ]

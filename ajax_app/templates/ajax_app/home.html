@@ -8,6 +8,14 @@
     <button type="button" class="btn btn-primary" id="api_submit">GET</button>
   </form>
 
+  <br><br><br>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ postform.as_p }}
+    <button type="button" class="btn btn-primary" id="post_submit">POST</button>
+  </form>
+
   <br><br>
   <div id="api_results"></div>
 
@@ -29,6 +37,37 @@
         dataType: 'json',
         success: function(data) {
           $('#api_results').text(data['result']);
+        },
+      });
+    }, 2000);
+  });
+
+  $('#post_submit').click(function() {
+    clearTimeout(delayTimer);
+    $('#api_results').text('Ładowanie...');
+    delayTimer = setTimeout(function() {
+      var text = $('#id_purl').val();
+      var text1 = $('#id_val1').val();
+      var text2 = $('#id_val2').val();
+      var text3 = $('#id_val3').val();
+      $.ajax({
+        url: '/postapirequest',
+        type: 'POST',
+        data: {
+          'url': text,
+          'value1': text1,
+          'value2': text2,
+          'value3': text3,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: 'json',
+        success: function(data) {
+          // $('#api_results').text(data['myval1']);
+          my_text = ''
+          for (x in data) {
+            my_text += x + ': ' + data[x] + ', ';
+          }
+          $('#api_results').text(my_text);
         },
       });
     }, 2000);
